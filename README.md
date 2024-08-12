@@ -21,13 +21,15 @@ MenuItem --> 메뉴판에 추가될 메뉴들을 객체로 생성하기 위해 �
 실수로 해당 값들을 직접 조작하여 변경하지 못하도록 외부 클래스에서 직접 접근하지 못하도록 private 설정. get/set으로 접근
 
 BeverageItem --> MenuItem을 상속. 
-음료 메뉴들은 모두 메뉴에 속해 있으므로 상속을 사용. MenuItem에 있는 변수는 재사용하고, 간식 메뉴를 출력하는 toString은 오버라이딩을 통해 재정의했음. (간식메뉴: ~~~)
+MenuItem에서 사용중인 변수를 상속받고,
+타입만을 재정의해서 사용. (Beverage의 경우는 type가 "음료"로 재정의됨)
 
 CoffeeMenuItem --> MenuItem을 상속.
-위와 동일. toString시 커피메뉴: 로 출력되도록 오버라이딩.
+위와 동일. 타입은 "커피"로 재정의되며,
+toString시 커피메뉴: 로 출력되도록 오버라이딩.
 
 DesertItem --> MenuItem을 상속.
-위와 동일.
+위와 동일. 타입은 "간식" 으로 재정의된다.
 
 
 # ------- MenuGenerator ------
