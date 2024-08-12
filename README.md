@@ -23,10 +23,10 @@ BeverageItem --> MenuItem을 상속.
 음료 메뉴들은 모두 메뉴에 속해 있으므로 상속을 사용. MenuItem에 있는 변수는 재사용하고, 간식 메뉴를 출력하는 toString은 오버라이딩을 통해 재정의했음. (간식메뉴: ~~~)
 
 CoffeeMenuItem --> MenuItem을 상속.
-상기와 동일. toString시 커피메뉴: 로 출력되도록 오버라이딩.
+위와 동일. toString시 커피메뉴: 로 출력되도록 오버라이딩.
 
 DesertItem --> MenuItem을 상속.
-상기와 동일. toString시 간식메뉴: 로 출력되도록 오버라이딩.
+위와 동일.
 --------------------------------------
 
 
