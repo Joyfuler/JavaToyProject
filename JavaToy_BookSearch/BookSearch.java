@@ -1,8 +1,10 @@
 package ch19.posBackup2.JavaToy_BookSearch;
 
 
+import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -10,8 +12,11 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
 
 public class BookSearch {
 	Scanner scanner = new Scanner(System.in);
@@ -50,24 +55,26 @@ public class BookSearch {
 		String releaseStartDate = scanner.nextLine();
 		System.out.println("종료 일자를 입력해주세요. (2020-02-20 형식으로 입력) :");
 		String releaseEndDate = scanner.nextLine();		
-		
+		System.out.println("날짜 정렬 방식을 선택해주세요. 1. 오름차순 정렬 2. 내림차순 정렬");
+		String sortBy = scanner.nextLine();
 		try {			
 			Date startDate = sdf.parse(releaseStartDate);
 			Date endDate = sdf.parse(releaseEndDate);
-			int count = 0;
-			for (Map.Entry<Integer, Book> entry : allBookList.entrySet()) {				
-				Date bookDate = sdf.parse(entry.getValue().releaseDate);				
+			int count = 0;			
+			List<Book> sortedBookList = sortByReleaseDate(allBookList, sortBy);
+			for (Book books : sortedBookList) {				
+				Date bookDate = sdf.parse(books.getReleaseDate());				
 				if ((bookDate.equals(startDate) || bookDate.after(startDate)) &&
 					(bookDate.equals(endDate) || bookDate.before(endDate))) {
 					count++;
-					System.out.print(entry);					
+					System.out.print(books);					
 				}
-			}
-			
+			}			
+		
 			System.out.println("총 [" +count + "] 건 검색 완료.");
 			
 		} catch (ParseException e) {
-			System.out.println("날짜 변환 중 예외 발생. 데이터를 확인해주세요.");
+			System.out.println("날짜 변환 중 예외 발생. 데이터 형식을 확인해주세요.");
 			System.out.println(e.getLocalizedMessage());
 		}
 		
@@ -89,11 +96,14 @@ public class BookSearch {
 	public void bookSearchByTitle() {
 		System.out.println("검색하려는 책 이름을 입력해주세요.");
 		String query = scanner.nextLine();
+		System.out.println("제목 정렬 방식을 선택해주세요. 1. 오름차순 정렬 2. 내림차순 정렬");
+		String sortBy = scanner.nextLine();
 		int count = 0;
-		for (Map.Entry<Integer, Book> entry: allBookList.entrySet()) {
-			if (entry.getValue().getName().contains(query)) {
+		List<Book> sortedBookList = sortByTitle(allBookList, sortBy);
+		for (Book book: sortedBookList) {
+			if (book.getName().contains(query)) {
 				count++;
-				System.out.print(entry.toString());
+				System.out.print(book);
 			}
 		}
 		
@@ -144,30 +154,77 @@ public class BookSearch {
 		}
 	}
 	
-	public Map<Integer, Book> sortByValue(HashMap<Integer, Book> bookMap){
-		List<Map.Entry<Integer, Book>> bookList = new LinkedList<Map.Entry<Integer, Book>>(bookMap.entrySet());
-		Collections.sort(bookList, new Comparator<Map.Entry<Integer, Book>>() {
-			public int compare(Map.Entry<Integer, Book> o1, Map.Entry<Integer, Book> o2) {
+	public List<Book> sortByReleaseDate(Map<Integer, Book> bookMap, String sortBy){
+		List<Map.Entry<Integer, Book>> bookList = new ArrayList<>(bookMap.entrySet());
+		Collections.sort(bookList, new Comparator<Map.Entry<Integer, Book>>() {	
+			@Override
+			public int compare(Entry<Integer, Book> o1, Entry<Integer, Book> o2) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				Date o1Date = null;
-				Date o2Date = null;
-				try {
-					o1Date = sdf.parse(o1.getValue().getReleaseDate());
-					o2Date = sdf.parse(o2.getValue().getReleaseDate());
+				Date d1 = null;
+				Date d2 = null;				
+				try {					
+					d1 = sdf.parse(o1.getValue().getReleaseDate());
+					d2 = sdf.parse(o2.getValue().getReleaseDate());
+					
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				return (o1Date.compareTo(o2Date));
+				
+				if (sortBy.equals("1")) {
+					return d1.compareTo(d2);
+				} else {
+					return d2.compareTo(d1);
+				}
+			}
+		});
+			
+//		Collections.sort(bookList, new Comparator<Map.Entry<Integer, Book>>() {
+//			public int compare(Map.Entry<Integer, Book> o1, Map.Entry<Integer, Book> o2) {
+//				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//				Date o1Date = null;
+//				Date o2Date = null;
+//				try {
+//					o1Date = sdf.parse(o1.getValue().getReleaseDate());
+//					o2Date = sdf.parse(o2.getValue().getReleaseDate());
+//				} catch (ParseException e) {					// 
+//					e.printStackTrace();
+//				}
+//				return (o1Date.compareTo(o2Date));
+//			}
+//		});
+			
+		List<Book> sortedBookList = new ArrayList<>();
+		for (Map.Entry<Integer, Book> entry : bookList) {
+			sortedBookList.add(entry.getValue());
+		}
+		
+		return sortedBookList;
+	}
+	
+	public List<Book> sortByTitle(Map<Integer, Book> allBookList2, String sortBy) {
+		List<Map.Entry<Integer, Book>> bookList = new ArrayList<Map.Entry<Integer, Book>>(allBookList2.entrySet());
+		Collator collator = Collator.getInstance(Locale.KOREAN);
+		Collections.sort(bookList, new Comparator<Map.Entry<Integer, Book>>() {	
+			@Override
+			public int compare(Entry<Integer, Book> o1, Entry<Integer, Book> o2) {
+				if (sortBy.equals("1")) {
+					//return o1.getValue().getName().compareTo(o2.getValue().getName());
+					return collator.compare(o1.getValue().getName(), o2.getValue().getName());
+				} else {
+					return collator.compare(o2.getValue().getName(), o1.getValue().getName());
+				}
+				
 			}
 		});
 		
-		HashMap<Integer, Book> temp = new LinkedHashMap<Integer, Book>();
-			for (Map.Entry<Integer, Book> book : bookList) {
-				temp.put(book.getKey(), book.getKey());
+		List<Book> sortedList = new ArrayList<Book>();
+		for (Map.Entry<Integer, Book> entry : bookList) {
+			sortedList.add(entry.getValue());
 		}
 		
-		return bookMap;
+		return sortedList;
+		
 	}
+	
 	
 }

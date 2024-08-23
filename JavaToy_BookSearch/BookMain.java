@@ -17,12 +17,13 @@ public class BookMain {
 		System.out.println("어서오세요. 도서정보 관리 시스템입니다.");
 		while (true) {
 			Scanner sc = new Scanner(System.in);
-			System.out.println("원하시는 기능을 선택해주세요. 1. 도서 리스트 확인 2.도서 등록 3. 도서 수정 4. 도서 검색 5. 프로그램 종료");
+			System.out.println("원하시는 기능을 선택해주세요. 1. 총 도서 리스트 확인 2.도서 등록 3. 도서 수정 4. 도서 검색 5. 프로그램 종료");
 			int select = Integer.parseInt(sc.nextLine());
 			switch (select) {
 			case 1:			
 				Map<Integer, Book> allBookMap = blg.getBookList();
-				System.out.println(allBookMap);				
+				System.out.println(allBookMap);		
+				System.out.println("총 [" + allBookMap.size() +"] 건의 도서가 검색되었습니다.");
 				break;
 			case 2:
 				System.out.println("도서 등록을 선택하셨습니다.");

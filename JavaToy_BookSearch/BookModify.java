@@ -30,7 +30,7 @@ public class BookModify {
 			System.out.println("출판사가 성공적으로 변경되었습니다.");
 			break;
 		case 3:
-			System.out.print("변경 전 출판년도: " + bookMap.get(select).getReleaseDate() + ", 변경 후(0000-00-00 형식 입력:");
+			System.out.print("변경 전 출판년도: " + bookMap.get(select).getReleaseDate() + ", 변경 후(0000-00-00 형식 입력) :");
 			String newReleaseDate = sc.nextLine();
 			bookMap.get(select).setReleaseDate(newReleaseDate);
 			System.out.println("발간일이 성공적으로 변경되었습니다.");
