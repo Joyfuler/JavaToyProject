@@ -6,9 +6,21 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class BookModify {
-	public void getBookInfoAndModify(int select) {
-		BookListGenerator blg = new BookListGenerator();
-		Map<Integer, Book> bookMap = blg.getBookList();
+	
+	private static BookModify instance = null;
+	private BookModify() {}
+	
+	public static BookModify getInstance() {
+		if (instance == null) {
+			instance = new BookModify();
+		}
+		
+		return instance;
+	}
+	
+	
+	public void getBookInfoAndModify(int select) {		
+		Map<Integer, Book> bookMap = BookListGenerator.GetInstance().getBookList();
 		
 		// 선택한 bookMap의 정보 출력.
 		System.out.println("당신이 선택한 도서 정보는 아래와 같습니다.");		

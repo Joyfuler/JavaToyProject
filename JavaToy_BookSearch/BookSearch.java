@@ -19,12 +19,22 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class BookSearch {
-	Scanner scanner = new Scanner(System.in);
-	BookListGenerator blg = new BookListGenerator();
-	Map<Integer, Book> allBookList = blg.getBookList();
+	
+	private BookSearch() {}
+	private static BookSearch instance = null;
+	public static BookSearch getInstance() {
+		if (instance == null) {
+			instance = new BookSearch();
+		}
+		
+		return instance;		
+	}
+	
+	Scanner scanner = new Scanner(System.in);	
+	Map<Integer, Book> allBookList = BookListGenerator.GetInstance().getBookList();
 	
 	
-	public void bookSearchByWord() {		
+	public void bookSearch() {		
 		System.out.println("1. 타입으로 검색 2. 제목으로 검색 3.출판사로 검색 4.발매일로 검색");
 		int select = Integer.parseInt(scanner.nextLine());
 		switch (select) {
@@ -156,10 +166,11 @@ public class BookSearch {
 	
 	public List<Book> sortByReleaseDate(Map<Integer, Book> bookMap, String sortBy){
 		List<Map.Entry<Integer, Book>> bookList = new ArrayList<>(bookMap.entrySet());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");		
 		Collections.sort(bookList, new Comparator<Map.Entry<Integer, Book>>() {	
 			@Override
 			public int compare(Entry<Integer, Book> o1, Entry<Integer, Book> o2) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				
 				Date d1 = null;
 				Date d2 = null;				
 				try {					

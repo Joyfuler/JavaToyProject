@@ -8,12 +8,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BookListGenerator {
+	
+	public static BookListGenerator instance = null;
+	
+	private BookListGenerator() {}
+	
+	static public BookListGenerator GetInstance() {
+		if (instance == null) {
+			instance = new BookListGenerator();
+		}
+		
+		return instance;
+	}
+	
 	public Map<Integer, Book> getBookList(){ 
 		Map<Integer, Book> allBookMap = new HashMap<Integer, Book>();
 		try {
 			
 			BufferedReader bufferedReader = new BufferedReader(new FileReader
-					("C:\\Users\\asiae\\eclipse-workspace\\com.lecture.practice\\src\\ch20\\task\\bookSearch\\Book.txt"));
+					("C:\\Users\\asiae\\eclipse-workspace\\com.lecture.practice\\src\\ch19\\posBackup2\\JavaToy_BookSearch\\Book.txt"));
 			String line = null;
 			int count = 0;
 			while ((line = bufferedReader.readLine()) != null) { //한줄 단위로 읽기. 비어있지 않은 경우 값을 읽어온다.

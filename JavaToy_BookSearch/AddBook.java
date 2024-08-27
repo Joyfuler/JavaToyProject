@@ -1,19 +1,31 @@
 package ch19.posBackup2.JavaToy_BookSearch;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 public class AddBook {
-	public Map<Integer, Book> registerBook(){		 
-		BookListGenerator bg = new BookListGenerator();
-		Map<Integer, Book> registeredMap = bg.getBookList();
+	
+	private static AddBook instance = null;
+	private AddBook() {}
+	
+	public static AddBook getInstance() {
+		if (instance == null) {
+			instance = new AddBook();
+		}
+		
+		return instance;
+	}
+	
+	
+	public Map<Integer, Book> registerBook(){
+		Map<Integer, Book> registeredMap = BookListGenerator.GetInstance().getBookList();
 		Map<Integer, Book> newBookMap = new HashMap<Integer, Book>();	
 		// 새롭게 등록할 책 정보를 담을 Map 객체.
 		Book newBook = null;
-		Scanner scanner = new Scanner(System.in);		
-		registeredMap = bg.getBookList();
-		int size = registeredMap.size();
+		Scanner scanner = new Scanner(System.in);
+		int size = registeredMap.isEmpty()? 0: Collections.max(registeredMap.keySet()) +1 ;		
 		System.out.println("새로 등록될 정보의 인덱스: " + size); // 현재 등록된 전체 객체의 인덱스를 확인하고 다음 인덱스에 대입하기 위함.
 		System.out.println("등록할 책의 타입을 숫자로 입력해주세요 : 1.교육 2. 수필 3. 소설");
 		String answer = scanner.nextLine();
