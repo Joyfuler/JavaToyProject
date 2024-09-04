@@ -4,8 +4,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class BookMain {
-	public static void main(String[] args) {				
-				
+	public static void main(String[] args) {		
 		System.out.println("어서오세요. 도서정보 관리 시스템입니다.");
 		while (true) {
 			Scanner sc = new Scanner(System.in);

@@ -26,7 +26,7 @@ public class AddBook {
 		Book newBook = null;
 		Scanner scanner = new Scanner(System.in);
 		int size = registeredMap.isEmpty()? 0: Collections.max(registeredMap.keySet()) +1 ;		
-		System.out.println("새로 등록될 정보의 인덱스: " + size); // 현재 등록된 전체 객체의 인덱스를 확인하고 다음 인덱스에 대입하기 위함.
+		System.out.println("새로 등록될 정보의 인덱스: " + size); // 현재 등록된 map의 key 중 가장 큰 값을 가져온다. 다음 값에는 가장 큰 값에 +1을 하여 key값을 대입한다.
 		System.out.println("등록할 책의 타입을 숫자로 입력해주세요 : 1.교육 2. 수필 3. 소설");
 		String answer = scanner.nextLine();
 		if (Integer.parseInt(answer) == 1) {
@@ -41,7 +41,7 @@ public class AddBook {
 		String answer2 = scanner.nextLine();
 		System.out.println("출판사를 입력해주세요.");
 		String answer3 = scanner.nextLine();
-		System.out.println("발매일을 입력해주세요. 형식은 0000-00-00 으로 입력");
+		System.out.println("발매일을 입력해주세요. 형식은 0000-00-00 으로 입력해주세요.");
 		String answer4 = scanner.nextLine();
 		System.out.println("책의 가격을 입력해주세요(숫자만 입력)");
 		int answer5 = Integer.parseInt(scanner.nextLine());		

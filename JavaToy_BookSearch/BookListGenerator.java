@@ -26,11 +26,10 @@ public class BookListGenerator {
 		try {
 			
 			BufferedReader bufferedReader = new BufferedReader(new FileReader
-					("C:\\Users\\asiae\\eclipse-workspace\\com.lecture.practice\\src\\ch19\\posBackup2\\JavaToy_BookSearch\\Book.txt"));
+					("C:\\Users\\asiae\\eclipse-workspace\\com.lecture.practice\\src\\ch20\\task\\bookSearch\\Book.txt"));
 			String line = null;
 			int count = 0;
-			while ((line = bufferedReader.readLine()) != null) { //한줄 단위로 읽기. 비어있지 않은 경우 값을 읽어온다.
-				//System.out.println(line);
+			while ((line = bufferedReader.readLine()) != null) {
 				String[] splitArray = line.split(";");
 					Book book = null;
 				if (splitArray[0].equals("교육")) {

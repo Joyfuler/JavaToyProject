@@ -18,24 +18,20 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 
-public class BookSearch {
-	
+public class BookSearch {	
 	private BookSearch() {}
 	private static BookSearch instance = null;
 	public static BookSearch getInstance() {
 		if (instance == null) {
 			instance = new BookSearch();
-		}
-		
+		}		
 		return instance;		
-	}
-	
+	}	
 	Scanner scanner = new Scanner(System.in);	
 	Map<Integer, Book> allBookList = BookListGenerator.GetInstance().getBookList();
 	
-	
 	public void bookSearch() {		
-		System.out.println("1. 타입으로 검색 2. 제목으로 검색 3.출판사로 검색 4.발매일로 검색");
+		System.out.println("1. 타입으로 검색 2. 제목으로 검색 3.출판사로 검색 4.발매일로 검색 5. 가격순으로 보기");
 		int select = Integer.parseInt(scanner.nextLine());
 		switch (select) {
 		case 1:
@@ -53,6 +49,11 @@ public class BookSearch {
 		case 4:
 			bookSearchByReleaseDate();
 			break;
+		
+		case 5:
+			sortByPrice(allBookList);
+			break;
+			
 		default:
 			System.out.println("잘못된 입력입니다.");
 			break;
@@ -115,10 +116,8 @@ public class BookSearch {
 				count++;
 				System.out.print(book);
 			}
-		}
-		
-		System.out.println("총 [" + count + "]건 검색됨\n");
-		
+		}		
+		System.out.println("총 [" + count + "]건 검색됨\n");		
 	}
 
 	public void bookSearchByType() {
@@ -189,26 +188,10 @@ public class BookSearch {
 			}
 		});
 			
-//		Collections.sort(bookList, new Comparator<Map.Entry<Integer, Book>>() {
-//			public int compare(Map.Entry<Integer, Book> o1, Map.Entry<Integer, Book> o2) {
-//				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-//				Date o1Date = null;
-//				Date o2Date = null;
-//				try {
-//					o1Date = sdf.parse(o1.getValue().getReleaseDate());
-//					o2Date = sdf.parse(o2.getValue().getReleaseDate());
-//				} catch (ParseException e) {					// 
-//					e.printStackTrace();
-//				}
-//				return (o1Date.compareTo(o2Date));
-//			}
-//		});
-			
 		List<Book> sortedBookList = new ArrayList<>();
 		for (Map.Entry<Integer, Book> entry : bookList) {
 			sortedBookList.add(entry.getValue());
-		}
-		
+		}		
 		return sortedBookList;
 	}
 	
@@ -219,23 +202,32 @@ public class BookSearch {
 			@Override
 			public int compare(Entry<Integer, Book> o1, Entry<Integer, Book> o2) {
 				if (sortBy.equals("1")) {
-					//return o1.getValue().getName().compareTo(o2.getValue().getName());
 					return collator.compare(o1.getValue().getName(), o2.getValue().getName());
 				} else {
 					return collator.compare(o2.getValue().getName(), o1.getValue().getName());
-				}
-				
+				}				
 			}
 		});
 		
 		List<Book> sortedList = new ArrayList<Book>();
 		for (Map.Entry<Integer, Book> entry : bookList) {
 			sortedList.add(entry.getValue());
-		}
-		
-		return sortedList;
-		
+		}		
+		return sortedList;		
 	}
 	
-	
+	public void sortByPrice(Map<Integer, Book> list){
+		List<Map.Entry<Integer, Book>> bookList = new ArrayList<>(list.entrySet());
+		System.out.println("가격 정렬 방식을 선택해주세요. 1. 오름차순 정렬 / 2. 내림차순 정렬");
+		int select = Integer.parseInt(scanner.nextLine());
+		if (select == 1) {
+			Collections.sort(bookList, (o1, o2) ->
+			Integer.compare(o1.getValue().getPrice(), o2.getValue().getPrice()));
+			System.out.println(bookList);
+		} else {
+			Collections.sort(bookList, (o1, o2) ->
+			Integer.compare(o2.getValue().getPrice(), o1.getValue().getPrice()));
+			System.out.println(bookList);
+		}
+	}
 }

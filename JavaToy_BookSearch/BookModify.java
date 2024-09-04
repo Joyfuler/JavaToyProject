@@ -8,8 +8,7 @@ import java.util.Scanner;
 public class BookModify {
 	
 	private static BookModify instance = null;
-	private BookModify() {}
-	
+	private BookModify() {}	
 	public static BookModify getInstance() {
 		if (instance == null) {
 			instance = new BookModify();
@@ -17,7 +16,6 @@ public class BookModify {
 		
 		return instance;
 	}
-	
 	
 	public void getBookInfoAndModify(int select) {		
 		Map<Integer, Book> bookMap = BookListGenerator.GetInstance().getBookList();
@@ -69,11 +67,11 @@ public class BookModify {
 							+ book.getPublisher() + ";"
 							+ book.getReleaseDate() + ";"
 							+ String.valueOf(book.getPrice()) +";");
-				writer.newLine(); // 매 줄이 끝날 때마다 줄바꿈.
+				writer.newLine(); // 줄바꿈. 매 줄이 끝날 때마다 진행.
 				
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-		}
+		} 
 	}
 }
