@@ -9,8 +9,21 @@ public class Line {
         this.isDriving = isDriving;
     }
 
+    public Line (int id){
+        this.id = id;
+        this.isDriving = "N";
+    }
+
+    public Line(String isDriving){
+        this.isDriving = isDriving;
+    }
+
     public int getId() {
         return id;
+    }
+
+    public String getIsDrive() {
+        return isDriving;
     }
 
     public void setId(int id) {

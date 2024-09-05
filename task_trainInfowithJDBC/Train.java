@@ -5,38 +5,55 @@ public class Train {
     private int train_count;
     private String driver;
     private String isExpress;
-    private int id;
+
+    private Line line;
 
     public Train(){}
 
 
-    public Train(int train_no, int train_count, String driver, String isExpress, int id) {
+    public Train(int train_no, int train_count, String driver, String isExpress, Line line) {
         this.train_no = train_no;
         this.train_count = train_count;
         this.driver = driver;
         this.isExpress = isExpress;
-        this.id = id;
+        this.line = line;
     }
 
-    public Train(int train_no, int train_count, String driver, int id) {
+    public Train(int train_no, int train_count, String driver, Line line) {
         this.train_no = train_no;
         this.train_count = train_count;
         this.driver = driver;
-        this.id = id;
+        this.line = line;
     }
 
-    public Train(int number, String trainCount, String driver, String id) {
+    public Train(int number, String trainCount, String driver, Line line) {
         this.train_no = number;
         this.train_count = Integer.parseInt(trainCount);
         this.driver = driver;
-        this.id = Integer.parseInt(id);
+        this.line = line;
     }
 
-    public Train(int anInt, String string) {
+    public Train(String driver, int train_no, String isexpress, Line line){
+        this.driver = driver;
+        this.train_no = train_no;
+        this.isExpress = isexpress;
+        this.line = line;
+
+
+    }
+
+    public Train(int anInt, Line line) {
         this.train_no = anInt;
-        this.isExpress = string;
+        this.line = line;
     }
 
+    public Train(int number, String trainCount, String driver, String isExpress, Line line) {
+        this.line = line;
+        this.train_count = Integer.parseInt(trainCount);
+        this.isExpress = isExpress;
+        this.driver = driver;
+        this.train_no = number;
+    }
 
     public int getTrain_no() {
         return train_no;
@@ -70,29 +87,20 @@ public class Train {
         this.isExpress = isExpress;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Line getLine(){
+        return line;
     }
 
     @Override
     public String toString() {
-        return "Train{" +
-                "train_no=" + train_no +
-                ", train_count=" + train_count +
-                ", driver='" + driver + '\'' +
-                ", isExpress='" + isExpress + '\'' +
-                ", id=" + id +
-                '}';
+        return "Train[" +
+                "열차번호 = " + train_no +
+                ", 차량수 = " + train_count +
+                ", 운전자 = '" + driver + '\'' +
+                ", 급행여부 =" + (isExpress.equals("Y")? "급행":"안급행") +
+                ", 호선 = " + line.getId() + "호선" +
+                ", 운행여부 = " + (line.getIsDriving() == null? "조인안해서운행정보 없음": (line.getIsDriving().equals("Y")? "운행중": "안운행중")) +
+                ']';
     }
 
-    public String toString2(){
-        return "Train{" +
-                "train_no=" + train_no +
-                ", isExpress='" + isExpress + '\'' +
-                '}';
-    }
 }

@@ -18,7 +18,7 @@ public class TrainDaoImplements implements TrainDao {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                trainList.add(new Train(rs.getInt("train_no"), rs.getInt("train_count"), rs.getString("driver"), rs.getString("isexpress"), rs.getInt("id")));
+                trainList.add(new Train(rs.getInt("train_no"), rs.getInt("train_count"), rs.getString("driver"), rs.getString("isexpress"), new Line(rs.getInt("id"))));
             }
 
         } catch (SQLException e) {
@@ -29,7 +29,7 @@ public class TrainDaoImplements implements TrainDao {
 
     @Override
     public Train findTrain(int id) {
-        Train searchTrain = new Train();
+        Train searchTrain = null;
         String sql = "SELECT * FROM TRAIN WHERE TRAIN_NO = ?";
 
         try (Connection conn = DataSource.getDataSource();
@@ -42,7 +42,7 @@ public class TrainDaoImplements implements TrainDao {
                 String driver = rs.getString("driver");
                 String isExpress = rs.getString("isExpress");
                 int tid = rs.getInt("id");
-                searchTrain = new Train(train_no, train_count, driver, isExpress, tid);
+                searchTrain = new Train(train_no, train_count, driver, isExpress, new Line(tid));
             }
 
         } catch (SQLException e) {
@@ -63,7 +63,7 @@ public class TrainDaoImplements implements TrainDao {
             pstmt.setInt(1, train.getTrain_no());
             pstmt.setInt(2, train.getTrain_count());
             pstmt.setString(3, train.getDriver());
-            pstmt.setInt(4, train.getId());
+            pstmt.setInt(4, train.getLine().getId());
             result = pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -76,14 +76,16 @@ public class TrainDaoImplements implements TrainDao {
     @Override
     public int updateTrain(Train train) {
         int result = 0;
-        String sql = "update train set train_count = ?, driver = ?, id = ? where train_no = ?";
+        String sql = "update train set train_count = ?, driver = ?, id = ?, isexpress = ? where train_no = ?";
 
         try (Connection conn = DataSource.getDataSource();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, train.getTrain_count());
             pstmt.setString(2, train.getDriver());
-            pstmt.setInt(3, train.getId());
-            pstmt.setInt(4, train.getTrain_no());
+            pstmt.setInt(3, train.getLine().getId());
+            pstmt.setString(4, train.getIsExpress());
+            pstmt.setInt(5, train.getTrain_no());
+
 
             result = pstmt.executeUpdate();
 
@@ -112,17 +114,23 @@ public class TrainDaoImplements implements TrainDao {
     }
 
     @Override
-    public List<Train> getDrivingInfo() {
+    public List<Train> getDrivingInfo(int id) {
         List<Train> drivingList = new LinkedList<Train>();
-        String sql = "select a.train_no, b.isdriving \n" +
-                "from train a join line b on a.id = b.id;";
+        String sql = "select a.train_no, a.driver, a.isexpress, b.isdriving, id \n" +
+                "from train a natural join line b " +
+                "where id = ?";
         try (Connection conn = DataSource.getDataSource();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Train drivingTrain = new Train(rs.getInt("a.train_no"), rs.getString("b.isdriving"));
+                Train drivingTrain = new Train(rs.getString("a.driver"),
+                        rs.getInt("a.train_no"),
+                        rs.getString("a.isexpress"),
+                        new Line(rs.getInt("id"), rs.getString("b.isdriving")));
                 drivingList.add(drivingTrain);
             }
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
