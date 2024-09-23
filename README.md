@@ -26,10 +26,10 @@
 반장님 피드백 : 회원가입 시 중복 아이디를 체크하지 않고 완성하였으므로 데이터베이스 및 코드에서 유효성 검사를 더 철저히 해야 할 것.
                기타 시스템 메시지 등의 줄바꾸기를 통한 가독성 향상이 필요.
 
-GYM 프로젝트에 사용한 테이블 구조 (EXERD)
+# GYM 프로젝트에 사용한 테이블 구조 (EXERD)
 ![git에올릴exerd](https://github.com/user-attachments/assets/ca3285e0-8dca-47b6-adf6-3869539a22a3)
 
--- GYM 프로젝트 발표 후 보고서
+# GYM 프로젝트 발표 후 보고서
 ![박민국팀 GYM프로젝트 결과 보고서_2003](https://github.com/user-attachments/assets/313caec3-51b4-483d-ae14-9c657564cb84)
 ![박민국팀 GYM프로젝트 결과 보고서_2004](https://github.com/user-attachments/assets/c1d38237-108d-4bb5-a7fa-13d6b26f3609)
 ![박민국팀 GYM프로젝트 결과 보고서_2005](https://github.com/user-attachments/assets/3d7c6425-41e3-4403-b880-dd4eeedd4e89)
